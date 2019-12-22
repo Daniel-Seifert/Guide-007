@@ -174,7 +174,7 @@ export default {
   },
   computed: {
     ...mapGetters('app', ['cookieConsentVersion', 'getLocale']),
-    ...mapGetters('auth', ['isAuthenticated']),
+    ...mapGetters('auth', ['isAuthenticated', 'getLoginCsrfToken']),
   },
   methods: {
     ...mapActions('app', ['changeLocale', 'setCookieConsentVersion']),
@@ -198,7 +198,6 @@ export default {
 
       try {
         await this.login(formData);
-
         this.$router.push({ name: 'dashboard' });
       } catch (e) {
         console.log(e);

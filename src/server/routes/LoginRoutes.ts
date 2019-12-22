@@ -14,13 +14,12 @@ export const LoginRoutes = (app: Express.Application) => {
           password: password,
           csrfmiddlewaretoken: csrfToken,
         };
-
-        await HttpService.post('https://zpa.cs.hm.edu/login/ws_login', loginBody);
+        await HttpService.post('https://zpa.cs.hm.edu/login/ws_login', loginBody).then((response) => {
+          res.status(200).json(response.data.csrfmiddlewaretoken);
+        });
       })
       .catch((error) => {
         res.status(404).json(`Error during login into ZPA!\n${error}`);
       });
-
-    res.status(200).json('Logging into ZPA was successfull!');
   });
 };

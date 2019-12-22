@@ -14,6 +14,10 @@ export interface IAuthRequest {
   password: string;
 }
 
+export interface IAuthRequestCsrfToken{
+  csrfToken: string;
+}
+
 export interface IAuthActions {
   login(context: ActionContext<IAuthState, IState>, data: IAuthRequest): Promise<any>;
   logout(context: ActionContext<IAuthState, IState>): Promise<any>;
@@ -27,16 +31,17 @@ export const AuthActions: IAuthActions = {
   async login({ commit }, { username, password }) {
     getFormData(username, password);
     try {
-      await HttpService.post(`/login`, {
+      const csrfToken = await HttpService.post(`/login`, {
         username: username,
         password: password,
       });
-
       commit('SET_USERNAME', username);
       commit('SET_PASSWORD', password);
+      commit('SET_CSRFTOKEN', csrfToken.data);
     } catch (err) {
       commit('SET_USERNAME', null);
       commit('SET_PASSWORD', null);
+      commit('SET_CSRFTOKEN', null);
       throw new Error(err);
     }
   },
@@ -48,5 +53,5 @@ export const AuthActions: IAuthActions = {
     if(state.username === null && state.password === null){
       this.$router.push('/'); // TODO: change to /login when login route is available
     }
-  }
+  },
 };
