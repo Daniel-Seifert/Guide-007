@@ -3,7 +3,6 @@ import { AuthDefaultState, IAuthState } from './shared/modules/auth/state';
 
 export interface IState {
   [key: string]: any;
-
   app?: IAppState;
   auth?: IAuthState;
 }

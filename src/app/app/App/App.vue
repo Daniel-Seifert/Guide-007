@@ -10,55 +10,23 @@
         <span class="hidden-sm-and-down">Guide-007</span>
       </v-toolbar-title>
       <div class="flex-grow-1"></div>
-      <v-btn v-if="isAuthenticated === false" @click="showLoginModal = true">
-        Login
-      </v-btn>
-      <v-btn v-if="isAuthenticated" @click="onLogout">
-        Logout
-      </v-btn>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
-      <v-list dense>
+    <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            Menu
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            With great power...
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider></v-divider>
+      <v-list dense nav>
         <template v-for="item in items">
-          <v-row v-if="item.heading" :key="item.heading" align="center">
-            <v-col cols="6">
-              <v-subheader v-if="item.heading">
-                {{ item.heading }}
-              </v-subheader>
-            </v-col>
-            <v-col cols="6" class="text-center">
-              <a href="#!" class="body-2 black--text">EDIT</a>
-            </v-col>
-          </v-row>
-          <v-list-group
-            v-else-if="item.children"
-            :key="item.text"
-            v-model="item.model"
-            :prepend-icon="item.model ? item.icon : item['icon-alt']"
-            append-icon=""
-          >
-            <template v-slot:activator>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>
-                    {{ item.text }}
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </template>
-            <v-list-item v-for="(child, i) in item.children" :key="i" @click="">
-              <v-list-item-action v-if="child.icon">
-                <v-icon>{{ child.icon }}</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ child.text }}
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-group>
-          <v-list-item v-else :key="item.text" @click="">
+          <v-list-item :key="item.text" :to="item.to">
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
@@ -96,7 +64,7 @@
 </template>
 
 <script lang="ts">
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex';
 import { loadLocaleAsync } from '@shared/plugins/i18n/i18n';
 import VueNotificationStack from '@components/VueNotificationStack/VueNotificationStack.vue';
 import VueCookieConsent from '@components/VueCookieConsent/VueCookieConsent.vue';
@@ -107,6 +75,7 @@ import { addNotification } from '@components/VueNotificationStack/utils';
 import '../../../../node_modules/@mdi/font/css/materialdesignicons.css';
 import '../../../../node_modules/vuetify/dist/vuetify.css';
 import '../../shared/designSystem/global.scss';
+import { IState } from '../../state';
 
 export default {
   name: 'App',
@@ -130,11 +99,9 @@ export default {
       isLoginPending: false,
       drawer: false,
       items: [
-        { icon: 'settings', text: 'Settings' },
-        { icon: 'chat_bubble', text: 'Send feedback' },
-        { icon: 'help', text: 'Help' },
-        { icon: 'phonelink', text: 'App downloads' },
-        { icon: 'keyboard', text: 'Go to the old version' },
+        { icon: 'home', to: { name: 'home' }, text: 'Home' },
+        { icon: 'timeline', to: { name: 'timeline' }, text: 'Timeline' },
+        { icon: 'settings', to: { name: 'settings' }, text: 'Settings' },
       ],
     };
   },

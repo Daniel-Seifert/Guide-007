@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>GUIDE-007</h1>
+    <h1>Login</h1>
     <h3>Mother***er</h3>
   </div>
 </template>
