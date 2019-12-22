@@ -178,7 +178,7 @@ export default {
   },
   methods: {
     ...mapActions('app', ['changeLocale', 'setCookieConsentVersion']),
-    ...mapActions('auth', ['login', 'logout']),
+    ...mapActions('auth', ['login', 'logout', 'silentLogin']),
     localeSwitch(locale: string) {
       loadLocaleAsync(locale).catch((error: Error) => console.log(error)); // tslint:disable-line
 

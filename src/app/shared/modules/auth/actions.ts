@@ -17,6 +17,7 @@ export interface IAuthRequest {
 export interface IAuthActions {
   login(context: ActionContext<IAuthState, IState>, data: IAuthRequest): Promise<any>;
   logout(context: ActionContext<IAuthState, IState>): Promise<any>;
+  silentLogin(context: ActionContext<IAuthState, IState>): Promise<any>;
 }
 
 const getFormData = (username: string, password: string) =>
@@ -43,4 +44,9 @@ export const AuthActions: IAuthActions = {
     commit('SET_USERNAME', null);
     commit('SET_PASSWORD', null);
   },
+  async silentLogin({state}){
+    if(state.username === null && state.password === null){
+      this.$router.push('/'); // TODO: change to /login when login route is available
+    }
+  }
 };
