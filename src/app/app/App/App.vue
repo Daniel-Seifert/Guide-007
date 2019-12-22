@@ -174,11 +174,11 @@ export default {
   },
   computed: {
     ...mapGetters('app', ['cookieConsentVersion', 'getLocale']),
-    ...mapGetters('auth', ['isAuthenticated']),
+    ...mapGetters('auth', ['isAuthenticated', 'getLoginCsrfToken']),
   },
   methods: {
     ...mapActions('app', ['changeLocale', 'setCookieConsentVersion']),
-    ...mapActions('auth', ['createToken', 'revokeToken']),
+    ...mapActions('auth', ['login', 'logout', 'silentLogin']),
     localeSwitch(locale: string) {
       loadLocaleAsync(locale).catch((error: Error) => console.log(error)); // tslint:disable-line
 
@@ -197,10 +197,10 @@ export default {
       this.isLoginPending = true;
 
       try {
-        await this.createToken(formData);
-
+        await this.login(formData);
         this.$router.push({ name: 'dashboard' });
       } catch (e) {
+        console.log(e);
         addNotification({ title: 'Error during login', text: 'Please try again!' });
       }
 
@@ -210,7 +210,7 @@ export default {
     async onLogout() {
       this.isLoginPending = true;
 
-      await this.revokeToken();
+      await this.logout();
 
       this.$router.push('/');
 

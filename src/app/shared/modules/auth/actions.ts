@@ -7,75 +7,51 @@ import { IAuthState } from './state';
 import { IState } from '@/app/state';
 import { HttpService } from '@shared/services/HttpService/HttpService';
 
-export interface IAuthResponse {
-  access_token: string;
-  refresh_token: string;
-}
+export interface IAuthResponse {}
 
 export interface IAuthRequest {
   username: string;
   password: string;
 }
 
+export interface IAuthRequestCsrfToken{
+  csrfToken: string;
+}
+
 export interface IAuthActions {
-  createToken(context: ActionContext<IAuthState, IState>, data: IAuthRequest): Promise<any>;
-
-  refreshToken(context: ActionContext<IAuthState, IState>): Promise<any>;
-
-  revokeToken(context: ActionContext<IAuthState, IState>): Promise<any>;
+  login(context: ActionContext<IAuthState, IState>, data: IAuthRequest): Promise<any>;
+  logout(context: ActionContext<IAuthState, IState>): Promise<any>;
+  silentLogin(context: ActionContext<IAuthState, IState>): Promise<any>;
 }
 
 const getFormData = (username: string, password: string) =>
   `grant_type=password&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
 
 export const AuthActions: IAuthActions = {
-  async createToken({ commit }, { username, password }) {
+  async login({ commit }, { username, password }) {
+    getFormData(username, password);
     try {
-      const {
-        data: { access_token, refresh_token },
-      } = await HttpService.post<IAuthResponse>('/token', getFormData(username, password), {
-        headers: {
-          Authorization: 'Basic Zm9vYmFy',
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
+      const csrfToken = await HttpService.post(`/login`, {
+        username: username,
+        password: password,
       });
-
-      commit('SET_ACCESS_TOKEN', access_token);
-      commit('SET_REFRESH_TOKEN', refresh_token);
-    } catch (e) {
-      commit('SET_ACCESS_TOKEN', null);
-      commit('SET_REFRESH_TOKEN', null);
-      throw new Error(e);
+      commit('SET_USERNAME', username);
+      commit('SET_PASSWORD', password);
+      commit('SET_CSRFTOKEN', csrfToken.data);
+    } catch (err) {
+      commit('SET_USERNAME', null);
+      commit('SET_PASSWORD', null);
+      commit('SET_CSRFTOKEN', null);
+      throw new Error(err);
     }
   },
-  async refreshToken({ commit, state: { refreshToken } }) {
-    try {
-      const {
-        data: { access_token, refresh_token },
-      } = await HttpService.post<IAuthResponse>('/token', `grant_type=refresh_token&refresh_token=${refreshToken}`, {
-        headers: {
-          Authorization: 'Basic Zm9vYmFy',
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      });
-
-      commit('SET_ACCESS_TOKEN', access_token);
-      commit('SET_REFRESH_TOKEN', refresh_token);
-    } catch (e) {
-      commit('SET_ACCESS_TOKEN', null);
-      commit('SET_REFRESH_TOKEN', null);
-      throw new Error(e);
-    }
+  async logout({ commit }) {
+    commit('SET_USERNAME', null);
+    commit('SET_PASSWORD', null);
   },
-  async revokeToken({ commit }) {
-    try {
-      await HttpService.delete('/token');
-
-      commit('SET_ACCESS_TOKEN', null);
-      commit('SET_REFRESH_TOKEN', null);
-    } catch (e) {
-      commit('SET_ACCESS_TOKEN', null);
-      commit('SET_REFRESH_TOKEN', null);
+  async silentLogin({state}){
+    if(state.username === null && state.password === null){
+      this.$router.push('/'); // TODO: change to /login when login route is available
     }
   },
 };

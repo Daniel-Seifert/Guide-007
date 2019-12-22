@@ -1,11 +1,13 @@
 export interface IAuthState {
-  accessToken: string;
-  refreshToken: string;
+  username: string;
+  password: string;
+  loginCSRFToken: string;
 }
 
 export const AuthDefaultState = (): IAuthState => {
   return {
-    accessToken: null,
-    refreshToken: null,
+    username: null,
+    password: null,
+    loginCSRFToken: null,
   };
 };
