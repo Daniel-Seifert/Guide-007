@@ -1,22 +1,84 @@
 <template>
-  <div id="app" :class="$style.app">
+  <v-app id="app">
     <vue-notification-stack />
 
     <vue-navigation-progress :is-navigating="isNavigating" />
 
-    <vue-nav-bar>
-      <vue-button slot="right" v-if="isAuthenticated === false" color="primary" @click="showLoginModal = true">
+    <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="red darken-3" dark>
+      <v-toolbar-title>
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <span class="hidden-sm-and-down">Guide-007</span>
+      </v-toolbar-title>
+      <div class="flex-grow-1"></div>
+      <v-btn v-if="isAuthenticated === false" @click="showLoginModal = true">
         Login
-      </vue-button>
-
-      <vue-button slot="right" v-if="isAuthenticated" color="primary" @click="onLogout">
+      </v-btn>
+      <v-btn v-if="isAuthenticated" @click="onLogout">
         Logout
-      </vue-button>
-    </vue-nav-bar>
+      </v-btn>
+    </v-app-bar>
 
-    <router-view :class="$style.content" />
+    <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
+      <v-list dense>
+        <template v-for="item in items">
+          <v-row v-if="item.heading" :key="item.heading" align="center">
+            <v-col cols="6">
+              <v-subheader v-if="item.heading">
+                {{ item.heading }}
+              </v-subheader>
+            </v-col>
+            <v-col cols="6" class="text-center">
+              <a href="#!" class="body-2 black--text">EDIT</a>
+            </v-col>
+          </v-row>
+          <v-list-group
+            v-else-if="item.children"
+            :key="item.text"
+            v-model="item.model"
+            :prepend-icon="item.model ? item.icon : item['icon-alt']"
+            append-icon=""
+          >
+            <template v-slot:activator>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{ item.text }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+            <v-list-item v-for="(child, i) in item.children" :key="i" @click="">
+              <v-list-item-action v-if="child.icon">
+                <v-icon>{{ child.icon }}</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ child.text }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+          <v-list-item v-else :key="item.text" @click="">
+            <v-list-item-action>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ item.text }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
 
-    <vue-footer />
+    <v-content>
+      <v-container class="fill-height" fluid>
+        <v-row align="center" justify="center">
+          <router-view :class="$style.content" />
+        </v-row>
+      </v-container>
+    </v-content>
 
     <vue-cookie-consent
       current-version="1.0.0"
@@ -27,136 +89,32 @@
       consent.
     </vue-cookie-consent>
 
-    <vue-sidebar>
-      <vue-sidebar-group title="Languages">
-        <vue-sidebar-group-item>
-          <vue-select name="lang" id="lang" :options="languages" @input="localeSwitch" :value="getLocale" />
-        </vue-sidebar-group-item>
-      </vue-sidebar-group>
-
-      <vue-sidebar-group title="Navigation">
-        <vue-sidebar-group-item to="/">
-          <vue-icon-code />
-          Home
-        </vue-sidebar-group-item>
-
-        <vue-sidebar-group-item :to="{ name: 'counter' }">
-          <vue-icon-hashtag />
-          VueX Example
-        </vue-sidebar-group-item>
-
-        <vue-sidebar-group-item :to="{ name: 'form' }">
-          <vue-icon-hashtag />
-          Form Example
-        </vue-sidebar-group-item>
-      </vue-sidebar-group>
-
-      <vue-sidebar-group title="Documentation">
-        <vue-sidebar-group-item>
-          <a href="https://vuesion.github.io/docs/en/">
-            <vue-icon-book />
-            Documentation
-          </a>
-        </vue-sidebar-group-item>
-
-        <vue-sidebar-group-item>
-          <a href="/storybook/?path=/story/design-system-design-system--intro">
-            <vue-icon-book />
-            Design System
-          </a>
-        </vue-sidebar-group-item>
-
-        <vue-sidebar-group-item>
-          <a href="/storybook/?path=/story/atoms-badge--badge-variants">
-            <vue-icon-puzzle-piece />
-            Components
-          </a>
-        </vue-sidebar-group-item>
-      </vue-sidebar-group>
-
-      <vue-sidebar-group title="Community">
-        <vue-sidebar-group-item>
-          <a href="https://github.com/vuesion/vuesion" target="_blank" rel="noopener">
-            <vue-icon-github />
-            Github
-          </a>
-        </vue-sidebar-group-item>
-
-        <vue-sidebar-group-item>
-          <a href="https://discord.gg/59x5cg2" target="_blank" rel="noopener"> Discord </a>
-        </vue-sidebar-group-item>
-
-        <vue-sidebar-group-item>
-          <a href="https://slack-vuesion.herokuapp.com/" target="_blank" rel="noopener"> Slack </a>
-        </vue-sidebar-group-item>
-
-        <vue-sidebar-group-item>
-          <a href="https://chat.vuejs.org/" target="_blank" rel="noopener"> VueLand </a>
-        </vue-sidebar-group-item>
-
-        <vue-sidebar-group-item>
-          <a href="https://twitter.com/vuesion1" target="_blank" rel="noopener">
-            <vue-icon-twitter-square />
-            Twitter
-          </a>
-        </vue-sidebar-group-item>
-      </vue-sidebar-group>
-    </vue-sidebar>
-
     <vue-modal :show="showLoginModal" @close="showLoginModal = false">
       <login-form :loading="isLoginPending" @submit="onLoginSubmit" />
     </vue-modal>
-  </div>
+  </v-app>
 </template>
 
 <script lang="ts">
 import { mapActions, mapGetters } from 'vuex';
 import { loadLocaleAsync } from '@shared/plugins/i18n/i18n';
-import '@shared/designSystem/global.scss';
-import VueNavBar from '@components/VueNavBar/VueNavBar.vue';
-import VueGrid from '@components/VueGrid/VueGrid.vue';
-import VueGridItem from '@components/VueGridItem/VueGridItem.vue';
-import VueFooter from '@components/VueFooter/VueFooter.vue';
 import VueNotificationStack from '@components/VueNotificationStack/VueNotificationStack.vue';
 import VueCookieConsent from '@components/VueCookieConsent/VueCookieConsent.vue';
 import VueNavigationProgress from '@components/VueNavigationProgress/VueNavigationProgress.vue';
-import VueSidebar from '@components/VueSidebar/VueSidebar.vue';
-import VueSidebarGroup from '@components/VueSidebar/VueSidebarGroup/VueSidebarGroup.vue';
-import VueSidebarGroupItem from '@components/VueSidebar/VueSidebarGroupItem/VueSidebarGroupItem.vue';
-import VueIconCode from '@components/icons/VueIconCode/VueIconCode.vue';
-import VueIconBook from '@components/icons/VueIconBook/VueIconBook.vue';
-import VueIconHashtag from '@components/icons/VueIconHashtag/VueIconHashtag.vue';
-import VueIconGithub from '@components/icons/VueIconGithub/VueIconGithub.vue';
-import VueIconTwitterSquare from '@components/icons/VueIconTwitterSquare/VueIconTwitterSquare.vue';
-import VueSelect from '@components/VueSelect/VueSelect.vue';
-import VueIconPuzzlePiece from '@components/icons/VueIconPuzzlePiece/VueIconPuzzlePiece.vue';
-import VueButton from '@components/VueButton/VueButton.vue';
 import VueModal from '@components/VueModal/VueModal.vue';
 import LoginForm from '@shared/modules/auth/LoginForm/LoginForm.vue';
 import { addNotification } from '@components/VueNotificationStack/utils';
+import '../../../../node_modules/@mdi/font/css/materialdesignicons.css';
+import '../../../../node_modules/vuetify/dist/vuetify.css';
+import '../../shared/designSystem/global.scss';
 
 export default {
   name: 'App',
   components: {
     LoginForm,
     VueModal,
-    VueButton,
-    VueIconPuzzlePiece,
-    VueSelect,
-    VueIconTwitterSquare,
-    VueIconGithub,
-    VueIconHashtag,
-    VueIconBook,
-    VueIconCode,
-    VueSidebarGroupItem,
-    VueSidebarGroup,
-    VueSidebar,
-    VueNavigationProgress,
     VueCookieConsent,
-    VueNavBar,
-    VueGrid,
-    VueGridItem,
-    VueFooter,
+    VueNavigationProgress,
     VueNotificationStack,
   },
   data(): any {
@@ -170,6 +128,14 @@ export default {
       ],
       showLoginModal: false,
       isLoginPending: false,
+      drawer: false,
+      items: [
+        { icon: 'settings', text: 'Settings' },
+        { icon: 'chat_bubble', text: 'Send feedback' },
+        { icon: 'help', text: 'Help' },
+        { icon: 'phonelink', text: 'App downloads' },
+        { icon: 'keyboard', text: 'Go to the old version' },
+      ],
     };
   },
   computed: {
@@ -225,24 +191,5 @@ export default {
 </script>
 
 <style lang="scss" module>
-@import '~@/app/shared/design-system';
-@import '~@/app/shared/designSystem/reset';
-@import '~@/app/shared/designSystem/typo';
-
-.app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.content {
-  flex: 1;
-}
-
-.logo {
-  position: relative;
-  top: $space-4;
-  width: $space-24;
-  height: $space-24;
-}
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons');
 </style>

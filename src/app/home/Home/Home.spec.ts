@@ -2,14 +2,20 @@ import { createLocalVue, shallowMount } from '@vue/test-utils';
 import Vuex from 'vuex';
 import { i18n } from '@shared/plugins/i18n/i18n';
 import Home from './Home.vue';
-import Stage from '../components/Stage/Stage.vue';
-import HomeSection from '../components/HomeSection/HomeSection.vue';
+import Vuetify from 'vuetify';
 
 const localVue = createLocalVue();
 
 localVue.use(Vuex);
+localVue.use(Vuetify);
 
 describe('Home.vue', () => {
+  let vuetify: any;
+
+  beforeEach(() => {
+    vuetify = new Vuetify();
+  });
+
   test('renders component', () => {
     const store = new Vuex.Store({
       state: {
@@ -26,9 +32,7 @@ describe('Home.vue', () => {
       store,
       localVue,
       i18n,
+      vuetify,
     });
-
-    expect(wrapper.findAll(Stage)).toHaveLength(1);
-    expect(wrapper.findAll(HomeSection)).toHaveLength(4);
   });
 });
