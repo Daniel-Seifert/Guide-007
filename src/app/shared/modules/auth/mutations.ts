@@ -1,16 +1,15 @@
 import { IAuthState } from './state';
 
 export interface IAuthMutations {
-  SET_ACCESS_TOKEN(state: IAuthState, accessToken: string): void;
-
-  SET_REFRESH_TOKEN(state: IAuthState, refreshToken: string): void;
+  SET_USERNAME(state: IAuthState, username: string): void;
+  SET_PASSWORD(state: IAuthState, password: string): void;
 }
 
 export const AuthMutations: IAuthMutations = {
-  SET_ACCESS_TOKEN: (state, accessToken) => {
-    state.accessToken = accessToken;
+  SET_USERNAME:(state, username) => {
+    state.username = username;
   },
-  SET_REFRESH_TOKEN: (state, refreshToken) => {
-    state.refreshToken = refreshToken;
+  SET_PASSWORD:(state, password) => {
+    state.password = password;
   },
 };

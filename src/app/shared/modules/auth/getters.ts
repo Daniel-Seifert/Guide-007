@@ -6,6 +6,6 @@ export interface IAuthGetters {
 
 export const AuthGetters: IAuthGetters = {
   isAuthenticated(state: IAuthState): boolean {
-    return state.accessToken !== null;
+    return state.password !== null && state.username !== null;
   },
 };
