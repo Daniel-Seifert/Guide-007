@@ -1,7 +1,7 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils';
 import Vuex from 'vuex';
 import { i18n } from '@shared/plugins/i18n/i18n';
-import Home from './Home.vue';
+import Timeline from './Timeline.vue';
 import Vuetify from 'vuetify';
 
 const localVue = createLocalVue();
@@ -9,7 +9,7 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(Vuetify);
 
-describe('Home.vue', () => {
+describe('Timeline.vue', () => {
   let vuetify: any;
 
   beforeEach(() => {
@@ -28,7 +28,7 @@ describe('Home.vue', () => {
         },
       },
     });
-    const wrapper = shallowMount(Home, {
+    const wrapper = shallowMount(Timeline, {
       store,
       localVue,
       i18n,

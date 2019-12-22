@@ -1,7 +1,7 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils';
 import Vuex from 'vuex';
 import { i18n } from '@shared/plugins/i18n/i18n';
-import Home from './Home.vue';
+import Settings from './Settings.vue';
 import Vuetify from 'vuetify';
 
 const localVue = createLocalVue();
@@ -28,7 +28,7 @@ describe('Home.vue', () => {
         },
       },
     });
-    const wrapper = shallowMount(Home, {
+    const wrapper = shallowMount(Settings, {
       store,
       localVue,
       i18n,

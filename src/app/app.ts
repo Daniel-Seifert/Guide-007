@@ -11,8 +11,10 @@ import { IState } from './state';
 import { i18n } from '@shared/plugins/i18n/i18n';
 import { HttpService } from '@shared/services/HttpService/HttpService';
 import './shared/directives';
+import Vuetify from 'vuetify';
 
 Vue.use(VeeValidate, { inject: false, delay: 1 });
+Vue.use(Vuetify);
 
 export interface IApp {
   app: Vue;
@@ -30,6 +32,11 @@ export const createApp = (): IApp => {
     router,
     store,
     i18n,
+    vuetify: new Vuetify({
+      icons: {
+        iconfont: 'mdi',
+      },
+    }),
     render: (h) => h(App),
   });
 
