@@ -28,11 +28,10 @@ export const router: VueRouter = new VueRouter({
 router.beforeEach((to: Route, from: Route, next: any) => {
   if (to.matched.some((record: RouteRecord) => record.meta.requiresAuth)) {
     const isAuthenticated = store.getters['auth/isAuthenticated'];
-
     if (!isAuthenticated) {
       next({ path: '/', query: { redirect: to.fullPath } });
     } else {
-      next({ path: '/timeline', query: { redirect: to.fullPath } });
+      next({ path: '/home', query: { redirect: to.fullPath } });
     }
   } else {
     next();
