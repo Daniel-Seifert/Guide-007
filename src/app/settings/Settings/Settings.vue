@@ -15,10 +15,10 @@
                     <span>Scheme</span>
                     <v-switch
                       v-model="$vuetify.theme.dark"
-                      :value="dark"
+                      :value="isDarkmode"
                       primary
                       label="Dark"
-                      @change="setDarkmode(!dark)"
+                      @change="setDarkmode(!isDarkmode)"
                     />
                   </v-col>
                 </v-row>
@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import { IState } from '@/app/state';
 
 export default {
@@ -39,10 +39,7 @@ export default {
   },
   data: () => ({}),
   computed: {
-    ...mapState({
-      dark: (state: IState) =>
-        (state.app.config && state.app.config.features && state.app.config.features.dark) || false,
-    }),
+    ...mapGetters('app', ['isDarkmode'])
   },
   methods: {
     ...mapActions('app', ['setDarkmode']),

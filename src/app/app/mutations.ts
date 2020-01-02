@@ -14,6 +14,6 @@ export const AppMutations: IAppMutations = {
     state.cookieConsentVersion = version;
   },
   SET_DARK_MODE: (state: IAppState, enabled: boolean) => {
-    state.config.features.dark = enabled;
+    state.dark = enabled;
   },
 };

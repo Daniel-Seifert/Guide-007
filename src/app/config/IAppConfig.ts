@@ -3,6 +3,5 @@ export interface IAppConfig {
     baseUrl: string;
   };
   features: {
-    dark: boolean;
   };
 }

@@ -12,8 +12,6 @@ export const AppActions: IAppActions = {
   setCookieConsentVersion: ({ commit }: ActionContext<IAppState, IAppState>, version: string) =>
     commit('SET_COOKIE_CONSENT_VERSION', version),
   setDarkmode: ({ commit }: ActionContext<IAppState, IAppState>, enabled: boolean) => {
-    console.log("Setting dark mode");
-    console.log(enabled);
     commit('SET_DARK_MODE', enabled)
   },
 };

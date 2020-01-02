@@ -1,5 +1,7 @@
 {
   "api": {
     "baseUrl": "https://vuesion.herokuapp.com"
+  },
+  "features": {
   }
 }

@@ -20,6 +20,7 @@ export interface IApp {
   app: Vue;
   router: VueRouter;
   store: Store<IState>;
+  vuetify: any;
   i18n: VueI18n;
 }
 
@@ -28,17 +29,19 @@ export const createApp = (): IApp => {
 
   HttpService.store = store;
 
+  const vuetify = new Vuetify({
+    icons: {
+      iconfont: 'mdi',
+    },
+  });
+
   const app: Vue = new Vue({
     router,
     store,
     i18n,
-    vuetify: new Vuetify({
-      icons: {
-        iconfont: 'mdi',
-      },
-    }),
+    vuetify,
     render: (h) => h(App),
   });
 
-  return { app, router, store, i18n };
+  return { app, router, store, vuetify, i18n };
 };

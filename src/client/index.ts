@@ -4,6 +4,7 @@ import { Component } from 'vue-router/types/router';
 import { createApp, IApp } from '@/app/app';
 import { IPreLoad } from '@/server/isomorphic';
 import { HttpService, initHttpService } from '@shared/services/HttpService/HttpService';
+import { onStoreLoaded } from '../app/store';
 
 if (PRODUCTION) {
   const runtime: any = require('serviceworker-webpack-plugin/lib/runtime');
@@ -14,13 +15,14 @@ if (PRODUCTION) {
   }
 }
 
-const { app, router, store, i18n }: IApp = createApp();
+const { app, router, store, vuetify, i18n }: IApp = createApp();
 
 i18n.locale = store.state.app.locale;
 i18n.fallbackLocale = 'en';
 i18n.setLocaleMessage(store.state.app.locale, store.state.app.defaultMessages);
 
 initHttpService(store, router);
+onStoreLoaded(store, vuetify)
 
 /**
  * redirect client if server renders a different page than requested
