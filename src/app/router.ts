@@ -23,8 +23,6 @@ export const router: VueRouter = new VueRouter({
   },
 });
 
-// example guard
-// TODO remove or adjust in production code
 router.beforeEach((to: Route, from: Route, next: any) => {
   if (to.matched.some((record: RouteRecord) => record.meta.requiresAuth)) {
     const isAuthenticated = store.getters['auth/isAuthenticated'];
@@ -33,7 +31,5 @@ router.beforeEach((to: Route, from: Route, next: any) => {
     } else {
       next({ path: '/home', query: { redirect: to.fullPath } });
     }
-  } else {
-    next();
   }
 });

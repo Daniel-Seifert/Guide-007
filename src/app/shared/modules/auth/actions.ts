@@ -7,14 +7,14 @@ import { IAuthState } from './state';
 import { IState } from '@/app/state';
 import { HttpService } from '@shared/services/HttpService/HttpService';
 
-export interface IAuthResponse {}
+export interface IAuthResponse { }
 
 export interface IAuthRequest {
   username: string;
   password: string;
 }
 
-export interface IAuthRequestCsrfToken{
+export interface IAuthRequestCsrfToken {
   csrfToken: string;
 }
 
@@ -24,12 +24,8 @@ export interface IAuthActions {
   silentLogin(context: ActionContext<IAuthState, IState>): Promise<any>;
 }
 
-const getFormData = (username: string, password: string) =>
-  `grant_type=password&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
-
 export const AuthActions: IAuthActions = {
   async login({ commit }, { username, password }) {
-    getFormData(username, password);
     try {
       const csrfToken = await HttpService.post(`/login`, {
         username: username,
@@ -49,9 +45,9 @@ export const AuthActions: IAuthActions = {
     commit('SET_USERNAME', null);
     commit('SET_PASSWORD', null);
   },
-  async silentLogin({state}){
-    if(state.username === null && state.password === null){
-      this.$router.push('/'); // TODO: change to /login when login route is available
+  async silentLogin({ state }) {
+    if (state.username === null && state.password === null) {
+      this.$router.push('/');
     }
   },
 };
