@@ -6,7 +6,7 @@ export const HomeRoutes: RouteConfig[] = [
     name: 'home',
     component: () => import(/* webpackChunkName: "home" */ './Home/Home.vue').then((m: any) => m.default),
     meta: {
-      requiresAuth: true
-    }
+      requiresAuth: true,
+    },
   },
 ];

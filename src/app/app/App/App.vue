@@ -131,7 +131,7 @@ export default {
 
       try {
         await this.login(formData);
-        this.$router.push({ name: 'dashboard' });
+        await this.$router.push({ name: 'dashboard' });
       } catch (e) {
         console.log(e);
         addNotification({ title: 'Error during login', text: 'Please try again!' });

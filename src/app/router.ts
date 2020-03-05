@@ -22,3 +22,17 @@ export const router: VueRouter = new VueRouter({
     return savedPosition || { x: 0, y: 0 };
   },
 });
+
+router.beforeEach((to: Route, from: Route, next: any) => {
+  if (to.path === '/') {
+    next();
+  }
+  if (to.matched.some((record: RouteRecord) => record.meta.requiresAuth)) {
+    const isAuthenticated = store.getters['auth/isAuthenticated'];
+    if (!isAuthenticated) {
+      next({ path: '/', query: { redirect: to.fullPath } });
+    } else {
+      next({ path: '/home', query: { redirect: to.fullPath } });
+    }
+  }
+});
