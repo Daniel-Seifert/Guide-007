@@ -2,7 +2,7 @@
     <div>
         <v-card max-width="400">
             <v-card-title class="justify-center">
-                <h3>ZPA-Login</h3>ADD HM LOGO HERE
+                <v-img  src="/hmlogo.jpg"></v-img>
             </v-card-title>
             <v-card-text>
                 <v-text-field label="Username" prepend-icon="account_circle" v-model="username"/>
@@ -15,6 +15,7 @@
                 />
             </v-card-text>
             <v-card-actions>
+                <v-spacer/>
                 <v-btn class="white--text" color="red darken-1" v-on:click="doLogin()">Login</v-btn>
             </v-card-actions>
         </v-card>
@@ -23,8 +24,10 @@
 
 <script lang="ts">
   import { mapActions } from 'vuex';
+  import VueImage from '@components/VueImage/VueImage.vue';
 
   export default {
+    components: { VueImage },
     metaInfo: {
       title: 'Guide-007',
     },
