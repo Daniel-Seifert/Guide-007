@@ -5,7 +5,7 @@
                 <h3>ZPA-Login</h3>ADD HM LOGO HERE
             </v-card-title>
             <v-card-text>
-                <v-text-field label="Username" prepend-icon="account_circle" v-model="username" />
+                <v-text-field label="Username" prepend-icon="account_circle" v-model="username"/>
                 <v-text-field
                         label="Password"
                         type="Password"
@@ -22,6 +22,8 @@
 </template>
 
 <script lang="ts">
+  import { mapActions } from 'vuex';
+
   export default {
     metaInfo: {
       title: 'Guide-007',
@@ -32,6 +34,21 @@
         username: '',
         password: '',
       };
+    },
+    methods: {
+      ...mapActions('auth', ['login']),
+      async doLogin() {
+        const formData = {
+          username: this.username,
+          password: this.password,
+        };
+        try {
+          await this.login(formData);
+          await this.$router.push({ name: 'home' });
+        } catch (err) {
+          console.log(err);
+        }
+      },
     },
   };
 </script>

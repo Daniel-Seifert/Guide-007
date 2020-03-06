@@ -28,8 +28,8 @@ export const AuthActions: IAuthActions = {
   async login({ commit }, { username, password }) {
     try {
       const csrfToken = await HttpService.post(`/login`, {
-        username: username,
-        password: password,
+        username,
+        password,
       });
       commit('SET_USERNAME', username);
       commit('SET_PASSWORD', password);
@@ -47,7 +47,7 @@ export const AuthActions: IAuthActions = {
   },
   async silentLogin({ state }) {
     if (state.username === null && state.password === null) {
-      this.$router.push('/');
+      await this.$router.push('/');
     }
   },
 };
