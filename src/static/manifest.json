@@ -47,6 +47,11 @@
       "src": "/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "/hmlogo.jpg",
+      "sizes": "512x256",
+      "type": "image/jpg"
     }
   ],
   "splash_pages": null
