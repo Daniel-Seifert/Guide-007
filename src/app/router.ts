@@ -27,13 +27,13 @@ router.beforeEach((to: Route, from: Route, next: any) => {
   const isAuthenticated = store.getters['auth/isAuthenticated'];
   if (to.matched.some((record: RouteRecord) => record.meta.requiresAuth)) {
     if (!isAuthenticated) {
-      next({ path: '/', query: { redirect: to.fullPath } });
+      next({ path: '/login', query: { redirect: to.fullPath } });
     } else {
       next();
     }
   } else {
     if (isAuthenticated) {
-      next({ path: '/home', query: { redirect: to.fullPath } });
+      next({ path: '/', query: { redirect: to.fullPath } });
     } else {
       next();
     }

@@ -12,6 +12,7 @@
                         prepend-icon="lock"
                         append-icon="visibility_off"
                         v-model="password"
+                        @keydown.enter.prevent="doLogin"
                 />
             </v-card-text>
             <v-card-actions>

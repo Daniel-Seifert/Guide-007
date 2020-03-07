@@ -10,6 +10,10 @@
         <span class="hidden-sm-and-down">Guide-007</span>
       </v-toolbar-title>
       <div class="flex-grow-1"></div>
+      <v-btn tile large color="red darken" @click="toggleLogin" v-if="isAuthenticated">
+        <v-icon>account_circle</v-icon>
+        Logout
+      </v-btn>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
@@ -112,6 +116,12 @@ export default {
   methods: {
     ...mapActions('app', ['changeLocale', 'setCookieConsentVersion']),
     ...mapActions('auth', ['login', 'logout', 'silentLogin']),
+    async toggleLogin() {
+      if(this.isAuthenticated){
+        this.logout();
+        await this.$router.push({ name: 'login' });
+      }
+    },
     localeSwitch(locale: string) {
       loadLocaleAsync(locale).catch((error: Error) => console.log(error)); // tslint:disable-line
 
