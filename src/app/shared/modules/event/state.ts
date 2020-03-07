@@ -23,6 +23,7 @@ export interface IEvent {
   descriptions: string[];
   modules: string[];
   type: string;
+  weekday: string;
 }
 
 export interface IEventState {

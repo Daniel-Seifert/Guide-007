@@ -2,10 +2,9 @@
   <v-timeline>
     <v-timeline-item v-for="(slot, i) in getEvents" :key="i" :color="slot.color" small>
       <template v-slot:opposite>
-        <span
-          :class="`headline font-weight-bold ${slot.color}--text`"
-          v-text="`${slot.starttime}-${slot.endtime}`"
-        ></span>
+        <span :class="`headline font-weight-bold ${slot.color}--text`">
+          {{slot.weekday}} {{slot.duration.from | date}} {{slot.duration.from | time}}-{{slot.duration.to | time}}
+        </span>
         <br />
         <span :class="`font-weight-bold ${slot.color}--text`" v-text="`${slot.rooms}`"></span>
       </template>
@@ -21,8 +20,7 @@
 </template>
 
 <script lang="ts">
-  import { mapState, mapActions, mapGetters } from 'vuex';
-import { IState } from '@/app/state';
+  import { mapActions, mapGetters } from 'vuex';
 
 export default {
   metaInfo: {

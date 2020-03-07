@@ -12,6 +12,7 @@ import { i18n } from '@shared/plugins/i18n/i18n';
 import { HttpService } from '@shared/services/HttpService/HttpService';
 import './shared/directives';
 import Vuetify from 'vuetify';
+import { format } from 'date-fns';
 
 Vue.use(VeeValidate, { inject: false, delay: 1 });
 Vue.use(Vuetify);
@@ -43,5 +44,21 @@ export const createApp = (): IApp => {
     render: (h) => h(App),
   });
 
+  // Register custom filters
+  Vue.filter('date', (value: any) => {
+    if (value) {
+      return format(value, 'dd.MM.yyyy');
+    }
+  });
+  Vue.filter('time', (value: any) => {
+    if (value) {
+      return format(value, 'HH:mm');
+    }
+  });
+  Vue.filter('date-time', (value: any) => {
+    if (value) {
+      return format(value, 'dd.MM.yyyy HH:mm');
+    }
+  });
   return { app, router, store, vuetify, i18n };
 };

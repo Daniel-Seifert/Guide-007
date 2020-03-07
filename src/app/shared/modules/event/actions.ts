@@ -1,12 +1,13 @@
+/* tslint:disable */
 /**
  * based on Springboot security
  */
 
 import { ActionContext } from 'vuex';
-import { IEventEntry, IEventState } from './state';
+import { IEvent, IEventEntry, IEventState } from './state';
 import { IState } from '@/app/state';
 import { HttpService } from '@shared/services/HttpService/HttpService';
-import { add } from 'date-fns';
+import { parse } from 'date-fns';
 import { makeISOKeyFromDate } from '@shared/utils/dateutils';
 
 export interface IEventActions {
@@ -37,6 +38,29 @@ export const EventActions: IEventActions = {
       token: rootState.auth.loginCSRFToken,
       cookie: rootState.auth.cookie,
     });
-    commit('SET_EVENTS', { date, events: res.data.slots });
+
+    const mappedEvents: IEvent[] = res.data.slots.map((slot: any) => ({
+        changed: {
+          plan: slot.plan_change ? slot.plan_change : false,
+          room: false,
+          moved: false,
+          canceled: false,
+          description: '',
+        },
+        descriptions: slot.descriptions,
+        duration: {
+          from: parse(`${slot.date} ${slot.starttime}`, 'yyyy-MM-dd HH:mm', new Date()),
+          to: parse(`${slot.date} ${slot.endtime}`, 'yyyy-MM-dd HH:mm', new Date()),
+        },
+        groups: slot.groups,
+        modules: slot.modules,
+        rooms: slot.rooms,
+        teachers: slot.teachers,
+        type: slot.type,
+        weekday: slot.weekday,
+      }),
+    ).sort((a: IEvent, b: IEvent) => a.duration.from.getTime() - b.duration.from.getTime());
+
+    commit('SET_EVENTS', { date, events: mappedEvents });
   },
 };
