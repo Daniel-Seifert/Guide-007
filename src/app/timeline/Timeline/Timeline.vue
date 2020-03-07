@@ -1,6 +1,11 @@
 <template>
   <v-timeline>
-    <v-timeline-item v-for="(slot, i) in getEvents" :key="i" :color="slot.color" small>
+    <v-timeline-item v-for="(slot, i) in getEvents" :key="i" large>
+      <template v-slot:icon>
+        <v-avatar>
+          <v-img src="http://i.pravatar.cc/64" />
+        </v-avatar>
+      </template>
       <template v-slot:opposite>
         <span :class="`headline font-weight-bold ${slot.color}--text`">
           {{slot.weekday}} {{slot.duration.from | date}} {{slot.duration.from | time}}-{{slot.duration.to | time}}
@@ -8,13 +13,13 @@
         <br />
         <span :class="`font-weight-bold ${slot.color}--text`" v-text="`${slot.rooms}`"></span>
       </template>
-      <div class="py-5">
-        <h2 :class="`headline font-weight-light mb-4 ${slot.color}--text`">{{ slot.modules.join(', ') }}</h2>
-        <div>
+      <v-card class="elevation-2">
+        <v-card-title class="headline">{{ slot.modules.join(', ') }}</v-card-title>
+        <v-card-text>
           <h3 :class="`font-weight-light mb-4 ${slot.color}--text`">{{ slot.descriptions.join(', ') }}</h3>
           <h4 :class="`font-weight-light mb-4 ${slot.color}--text`">{{ slot.teachers.join(', ') }}</h4>
-        </div>
-      </div>
+        </v-card-text>
+      </v-card>
     </v-timeline-item>
   </v-timeline>
 </template>
