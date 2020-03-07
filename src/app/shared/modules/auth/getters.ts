@@ -3,6 +3,7 @@ import { IAuthState } from './state';
 export interface IAuthGetters {
   isAuthenticated(state: IAuthState): boolean;
   getLoginCsrfToken(state: IAuthState): string;
+  getLoginCookie(state: IAuthState): string;
 }
 
 export const AuthGetters: IAuthGetters = {
@@ -11,5 +12,8 @@ export const AuthGetters: IAuthGetters = {
   },
   getLoginCsrfToken(state: IAuthState): string {
     return state.loginCSRFToken;
+  },
+  getLoginCookie(state: IAuthState): string {
+    return state.cookie;
   },
 };

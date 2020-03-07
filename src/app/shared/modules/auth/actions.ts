@@ -33,17 +33,21 @@ export const AuthActions: IAuthActions = {
       });
       commit('SET_USERNAME', username);
       commit('SET_PASSWORD', password);
-      commit('SET_CSRFTOKEN', csrfToken.data);
+      commit('SET_CSRFTOKEN', csrfToken.data.token);
+      commit('SET_COOKIE', csrfToken.data.sessionID);
     } catch (err) {
       commit('SET_USERNAME', null);
       commit('SET_PASSWORD', null);
       commit('SET_CSRFTOKEN', null);
+      commit('SET_COOKIE', null);
       throw new Error(err);
     }
   },
   async logout({ commit }) {
     commit('SET_USERNAME', null);
     commit('SET_PASSWORD', null);
+    commit('SET_CSRFTOKEN', null);
+    commit('SET_COOKIE', null);
   },
   async silentLogin({ state }) {
     if (state.username === null && state.password === null) {

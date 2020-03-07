@@ -16,21 +16,11 @@ export const EventActions: IEventActions = {
    if (match != null){
     return match;
    } else {
-     // TODO: change to this after silent login works -> context.dispatch('auth/silentLogin', null, {root: true});
-     // dispatch('auth/login', {username: "seifert", password: pw}, {root: true});
-    const csrfToken = await HttpService.post(`/login`, {
-      username: "seifert",
-      password: "pw",
-    });
-    /*commit('SET_USERNAME', username);
-    commit('SET_PASSWORD', password);
-    commit('SET_CSRFTOKEN', csrfToken.data);*/
-    
     const res = await HttpService.post("/schedule", {
       date: new Date(),
-      token: csrfToken.data,
+      token: rootState.auth.loginCSRFToken,
+      cookie: rootState.auth.cookie,
     })
-    // token: rootState.auth.loginCSRFToken
     console.log(res);
    }
   },
