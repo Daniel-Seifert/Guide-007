@@ -1,7 +1,6 @@
 import * as Express from 'express';
 import { Request, Response } from 'express';
 import { HttpService } from '@/app/shared/services/HttpService/HttpService';
-import { generateKeyPair } from 'crypto';
 
 export const LoginRoutes = (app: Express.Application) => {
   app.post('/login', async (req: Request, res: Response) => {
@@ -10,7 +9,6 @@ export const LoginRoutes = (app: Express.Application) => {
     await HttpService.get('https://zpa.cs.hm.edu/login/ws_get_csrf_token')
       .then(async (tokenRes) => {
         const csrfToken = tokenRes.data.csrfmiddlewaretoken;
-
         await HttpService.post(
           'https://zpa.cs.hm.edu/login/ws_login/',
           `csrfmiddlewaretoken=${csrfToken}&username=${username}&password=${password}`,
@@ -18,9 +16,7 @@ export const LoginRoutes = (app: Express.Application) => {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           },
         ).then((response) => {
-          const cookieHeader: string = response.headers['set-cookie'][0];
-          console.log(response.headers);
-          console.log(response.data);
+          const cookieHeader: string = response.headers['set-cookie'].join('');
           res.status(200).json({
             token: response.data.csrfmiddlewaretoken,
             sessionID: extractSessionID(cookieHeader),
