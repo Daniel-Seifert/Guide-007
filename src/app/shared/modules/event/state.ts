@@ -1,5 +1,5 @@
 export interface IEventEntry {
-  fetchTime: Date;
+  expiryTime: Date;
   data: IEvent[];
 }
 
@@ -15,7 +15,7 @@ export interface IEvent {
     moved?: boolean;
     canceled?: boolean;
     description?: string;
-  }
+  };
 
   groups: string[];
   rooms: string[];
@@ -27,14 +27,16 @@ export interface IEvent {
 
 export interface IEventState {
   // Map date formated as ISO 8601 string (YYYY-MM-DDTHH:mm:ss.sssZ) of event to list of events
-  // i.e. 2011-10-05T14:48:00.000Z -> IEventEntry[]
+  // i.e. 2020-10 -> IEventEntry
   events: any;
+  selection: Date;
   maxCacheDays: number;
 }
 
 export const EventDefaultState = (): IEventState => {
   return {
     events: {},
+    selection: new Date(),
     maxCacheDays: 1,
   };
 };

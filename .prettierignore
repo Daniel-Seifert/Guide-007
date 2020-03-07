@@ -5,3 +5,4 @@ logs
 node_modules
 storybook-static
 coverage
+src

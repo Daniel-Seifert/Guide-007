@@ -3,25 +3,40 @@
  */
 
 import { ActionContext } from 'vuex';
-import { IEventState, IEvent } from './state';
+import { IEventEntry, IEventState } from './state';
 import { IState } from '@/app/state';
 import { HttpService } from '@shared/services/HttpService/HttpService';
+import { add } from 'date-fns';
+import { makeISOKeyFromDate } from '@shared/utils/dateutils';
 
 export interface IEventActions {
-  fetchEventsFromWeek(context: ActionContext<IEventState, IState>, date: Date): Promise<any>;
+  select(context: ActionContext<IEventState, IState>, date: Date): Promise<any>;
+
+  loadEventsForDate(context: ActionContext<IEventState, IState>, date: Date): Promise<any>;
 }
+
 export const EventActions: IEventActions = {
-  async fetchEventsFromWeek({getters, rootState, dispatch}, date) {
-   const match = getters.getEventsForWeek(date);
-   if (match != null){
-    return match;
-   } else {
-    const res = await HttpService.post("/schedule", {
-      date: new Date(),
+  async select({ getters, rootState, commit, dispatch }, date) {
+    const cacheKey = makeISOKeyFromDate(date);
+    const match: IEventEntry = rootState.event.events[cacheKey];
+
+    // Events already cached
+    if (match) {
+      // Events expired
+      if (new Date() > match.expiryTime) {
+        await dispatch('loadEventsForDate', date);
+      }
+    } else {
+      await dispatch('loadEventsForDate', date);
+    }
+    commit('SET_SELECTION', date);
+  },
+  async loadEventsForDate({ getters, rootState, commit }, date) {
+    const res = await HttpService.post('/schedule', {
+      date,
       token: rootState.auth.loginCSRFToken,
       cookie: rootState.auth.cookie,
-    })
-    console.log(res);
-   }
+    });
+    commit('SET_EVENTS', { date, events: res.data.slots });
   },
 };

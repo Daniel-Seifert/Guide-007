@@ -4,15 +4,11 @@ import { HttpService } from '@/app/shared/services/HttpService/HttpService';
 
 export const ScheduleRoutes = (app: Express.Application) => {
   app.post('/schedule', async (req: Request, res: Response) => {
-    const token = req.body.token;
     const cookie = req.body.cookie;
     const date = new Date(req.body.date);
-
-    console.log(`Requested cookie for schedule is ${cookie}`);
     await HttpService.get(`https://zpa.cs.hm.edu/student/ws_get_week_plan/?date=${date.toISOString().split('T')[0]}`, {
       headers: { Cookie: cookie },
     }).then(async (response) => {
-      console.log(response.data);
       res.status(200).json(response.data);
     })
       .catch((error) => {

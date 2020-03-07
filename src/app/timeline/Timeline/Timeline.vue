@@ -1,7 +1,6 @@
 <template>
   <v-timeline>
-    <v-btn @click="eventsFromWeek(new Date())">Reload</v-btn>
-    <v-timeline-item v-for="(slot, i) in slots" :key="i" :color="slot.color" small>
+    <v-timeline-item v-for="(slot, i) in getEvents" :key="i" :color="slot.color" small>
       <template v-slot:opposite>
         <span
           :class="`headline font-weight-bold ${slot.color}--text`"
@@ -22,52 +21,22 @@
 </template>
 
 <script lang="ts">
-import { mapState, mapActions } from 'vuex';
+  import { mapState, mapActions, mapGetters } from 'vuex';
 import { IState } from '@/app/state';
 
 export default {
   metaInfo: {
     title: 'Guide-007',
   },
-  data: () => ({
-    slots: [
-      {
-        color: 'cyan',
-        endtime: '15:00',
-        starttime: '13:30',
-        date: '2019-11-26',
-        weekday: 'Di',
-        rooms: ['R3.019', 'R3.018'],
-        teachers: ['Socher, G.'],
-        descriptions: ['Praktikum, 1. Teilgruppe'],
-        modules: ['Computergrafik und Bildverarbeitung'],
-      },
-      {
-        color: 'green',
-        endtime: '11:30',
-        starttime: '10:00',
-        date: '2019-11-26',
-        weekday: 'Di',
-        rooms: ['R1.007'],
-        teachers: ['Socher, G.'],
-        descriptions: ['Vorlesung'],
-        modules: ['Computergrafik und Bildverarbeitung'],
-      },
-      {
-        color: 'blue',
-        endtime: '13:15',
-        starttime: '11:45',
-        date: '2019-11-26',
-        weekday: 'Di',
-        rooms: ['R1.010A'],
-        teachers: ['Braun, O.'],
-        descriptions: ['Praktikum, 1. Teilgruppe Praktikum'],
-        modules: ['Verteilte Softwaresysteme'],
-      },
-    ],
-  }),
+  data: () => ({}),
+  computed: {
+    ...mapGetters('event', ['getEvents']),
+  },
   methods: {
-    ...mapActions({eventsFromWeek: 'event/fetchEventsFromWeek'}),
+    ...mapActions({select: 'event/select'}),
+  },
+  beforeCreate(): void {
+    this.$store.dispatch('event/select', new Date('2020-03-25T00:00:00'))
   }
 };
 </script>
