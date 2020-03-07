@@ -3,6 +3,7 @@ import { applyMiddlewares } from './middlewares';
 import { StaticRoutes } from './routes/StaticRoutes';
 import { SSRRoutes } from './routes/SSRRoutes';
 import { LoginRoutes } from './routes/LoginRoutes';
+import { ScheduleRoutes } from './routes/ScheduleRoutes';
 
 export const app: Express.Application = Express();
 
@@ -16,3 +17,4 @@ applyMiddlewares(app);
 StaticRoutes(app);
 SSRRoutes(app);
 LoginRoutes(app);
+ScheduleRoutes(app);

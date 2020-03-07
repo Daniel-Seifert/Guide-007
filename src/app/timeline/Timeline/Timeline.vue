@@ -1,5 +1,6 @@
 <template>
   <v-timeline>
+    <v-btn @click="eventsFromWeek(new Date())">Reload</v-btn>
     <v-timeline-item v-for="(slot, i) in slots" :key="i" :color="slot.color" small>
       <template v-slot:opposite>
         <span
@@ -21,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { IState } from '@/app/state';
 
 export default {
@@ -65,5 +66,8 @@ export default {
       },
     ],
   }),
+  methods: {
+    ...mapActions({eventsFromWeek: 'event/fetchEventsFromWeek'}),
+  }
 };
 </script>

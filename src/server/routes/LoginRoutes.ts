@@ -15,6 +15,8 @@ export const LoginRoutes = (app: Express.Application) => {
           csrfmiddlewaretoken: csrfToken,
         };
         await HttpService.post('https://zpa.cs.hm.edu/login/ws_login', loginBody).then((response) => {
+          console.log(response.headers)
+          console.log(`Login token is ${response.data.csrfmiddlewaretoken}`)
           res.status(200).json(response.data.csrfmiddlewaretoken);
         });
       })

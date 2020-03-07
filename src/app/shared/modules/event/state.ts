@@ -1,3 +1,8 @@
+export interface IEventEntry {
+  fetchTime: Date;
+  data: IEvent[];
+}
+
 export interface IEvent {
   duration: {
     from: Date;
@@ -22,12 +27,14 @@ export interface IEvent {
 
 export interface IEventState {
   // Map date formated as ISO 8601 string (YYYY-MM-DDTHH:mm:ss.sssZ) of event to list of events
-  // i.e. 2011-10-05T14:48:00.000Z -> IEvent[]
+  // i.e. 2011-10-05T14:48:00.000Z -> IEventEntry[]
   events: any;
+  maxCacheDays: number;
 }
 
 export const EventDefaultState = (): IEventState => {
   return {
-    events: {}
+    events: {},
+    maxCacheDays: 1,
   };
 };
