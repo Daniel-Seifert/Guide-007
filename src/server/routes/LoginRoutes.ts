@@ -33,6 +33,5 @@ function extractSessionID(setCookie: string) {
   const start = setCookie.indexOf('sessionid=');
   const end = setCookie.indexOf(';', start) > 0 ? setCookie.indexOf(';', start) : setCookie.length;
   const sessionID = setCookie.substring(start, end);
-  console.log(`Session id is: ${sessionID}`);
   return sessionID;
 }
