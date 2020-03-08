@@ -6,8 +6,10 @@ import { ActionContext } from 'vuex';
 import { IAuthState } from './state';
 import { IState } from '@/app/state';
 import { HttpService } from '@shared/services/HttpService/HttpService';
+import { router } from '@/app/router';
 
-export interface IAuthResponse { }
+export interface IAuthResponse {
+}
 
 export interface IAuthRequest {
   username: string;
@@ -20,7 +22,9 @@ export interface IAuthRequestCsrfToken {
 
 export interface IAuthActions {
   login(context: ActionContext<IAuthState, IState>, data: IAuthRequest): Promise<any>;
+
   logout(context: ActionContext<IAuthState, IState>): Promise<any>;
+
   silentLogin(context: ActionContext<IAuthState, IState>): Promise<any>;
 }
 
@@ -43,15 +47,16 @@ export const AuthActions: IAuthActions = {
       throw new Error(err);
     }
   },
-  async logout({ commit }) {
+  async logout({ state, commit }) {
     commit('SET_USERNAME', null);
     commit('SET_PASSWORD', null);
     commit('SET_CSRFTOKEN', null);
     commit('SET_COOKIE', null);
+    await router.push('/login');
   },
   async silentLogin({ state }) {
     if (state.username === null && state.password === null) {
-      await this.$router.push('/');
+      await router.push('/login');
     }
   },
 };

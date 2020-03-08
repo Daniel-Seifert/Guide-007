@@ -3,7 +3,7 @@
     <!-- Alerting -->
     <v-alert v-if="error" prominent type="error">
       <v-row align="center">
-        <v-col class="grow">{{error.message}}</v-col>
+        <v-col class="grow">{{error}}</v-col>
         <v-col class="shrink">
           <v-btn @click="logout">Login again</v-btn>
         </v-col>
@@ -68,7 +68,11 @@ export default {
     try {
       await this.$store.dispatch('event/select', new Date('2020-03-25T00:00:00'))
     } catch (e) {
-      this.error = e;
+      if (e.message) {
+        this.error = e.message;
+      } else {
+        this.error = e;
+      }
     }
     this.loading = false;
   }
