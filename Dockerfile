@@ -9,7 +9,7 @@ COPY ./package* ./
 COPY ./dist ./dist
 COPY ./.vuesion/config.json ./.vuesion/config.json
 COPY ./i18n ./i18n
-COPY ./storybook-static ./storybook-static
+#COPY ./storybook-static ./storybook-static
 RUN npm install --silent --only=production
 EXPOSE 3000
 CMD npm start

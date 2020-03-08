@@ -12,7 +12,7 @@ import { i18n } from '@shared/plugins/i18n/i18n';
 import { HttpService } from '@shared/services/HttpService/HttpService';
 import './shared/directives';
 import Vuetify from 'vuetify';
-import { format } from 'date-fns';
+import { format, getDay } from 'date-fns';
 
 Vue.use(VeeValidate, { inject: false, delay: 1 });
 Vue.use(Vuetify);
@@ -58,6 +58,28 @@ export const createApp = (): IApp => {
   Vue.filter('date-time', (value: any) => {
     if (value) {
       return format(new Date(value), 'dd.MM.yyyy HH:mm');
+    }
+  });
+  Vue.filter('day-name-full', (value: any) => {
+    if (value) {
+      switch (getDay(new Date(value))) {
+        case 0:
+          return 'Sonntag';
+        case 1:
+          return 'Montag';
+        case 2:
+          return 'Dienstag';
+        case 3:
+          return 'Mittwoch';
+        case 4:
+          return 'Donnerstag';
+        case 5:
+          return 'Freitag';
+        case 6:
+          return 'Samstag';
+        default:
+          return 'UNKNOWN';
+      }
     }
   });
   return { app, router, store, vuetify, i18n };

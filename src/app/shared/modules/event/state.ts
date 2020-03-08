@@ -3,6 +3,11 @@ export interface IEventEntry {
   data: IEvent[];
 }
 
+export interface IDayEvents {
+  day: Date;
+  events: IEvent[];
+}
+
 export interface IEvent {
   duration: {
     from: Date;
@@ -30,14 +35,20 @@ export interface IEventState {
   // Map date formated as ISO 8601 string (YYYY-MM-DDTHH:mm:ss.sssZ) of event to list of events
   // i.e. 2020-10 -> IEventEntry
   events: any;
-  selection: Date;
+  selection: {
+    from: Date;
+    to: Date;
+  };
   maxCacheDays: number;
 }
 
 export const EventDefaultState = (): IEventState => {
   return {
     events: {},
-    selection: new Date(),
+    selection: {
+      from: new Date(),
+      to: new Date(),
+    },
     maxCacheDays: 1,
   };
 };

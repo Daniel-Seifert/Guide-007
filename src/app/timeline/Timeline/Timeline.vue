@@ -11,27 +11,37 @@
     </v-alert>
     <!-- Core Timeline -->
     <v-timeline>
-      <v-timeline-item v-for="(slot, i) in events" :key="i" large>
-        <template v-slot:icon>
-          <v-avatar>
-            <v-img src="http://i.pravatar.cc/64" />
-          </v-avatar>
-        </template>
-        <template v-slot:opposite>
-          <span :class="`headline font-weight-bold ${slot.color}--text`">
-            {{slot.weekday}} {{slot.duration.from | date}} {{slot.duration.from | time}}-{{slot.duration.to | time}}
-          </span>
-          <br />
-          <span :class="`font-weight-bold ${slot.color}--text`" v-text="`${slot.rooms}`"></span>
-        </template>
-        <v-card class="elevation-2">
-          <v-card-title class="headline">{{ slot.modules.join(', ') }}</v-card-title>
-          <v-card-text>
-            <h3 :class="`font-weight-light mb-4 ${slot.color}--text`">{{ slot.descriptions.join(', ') }}</h3>
-            <h4 :class="`font-weight-light mb-4 ${slot.color}--text`">{{ slot.teachers.join(', ') }}</h4>
-          </v-card-text>
-        </v-card>
-      </v-timeline-item>
+      <div v-for="(dayEvent, i) in getDayEvents" :key="i">
+        <!-- Divider -->
+        <v-timeline-item color="red" small>
+          <template v-slot:opposite><v-divider></v-divider></template>
+          <span :class="`headline font-weight-bold --text`">
+              {{dayEvent.day | day-name-full}} {{dayEvent.day | date}}
+            </span>
+        </v-timeline-item>
+        <!-- Events for day -->
+        <v-timeline-item v-for="(slot, i) in dayEvent.events" :key="`${dayEvent.day}-${i}`" large>
+          <template v-slot:icon>
+            <v-avatar>
+              <v-img src="http://i.pravatar.cc/64" />
+            </v-avatar>
+          </template>
+          <template v-slot:opposite>
+            <span :class="`headline font-weight-bold ${slot.color}--text`">
+              {{slot.duration.from | time}}-{{slot.duration.to | time}}
+            </span>
+            <br />
+            <span :class="`font-weight-bold ${slot.color}--text`" v-text="`${slot.rooms}`"></span>
+          </template>
+          <v-card class="elevation-2">
+            <v-card-title class="headline">{{ slot.modules.join(', ') }}</v-card-title>
+            <v-card-text>
+              <h3 :class="`font-weight-light mb-4 ${slot.color}--text`">{{ slot.descriptions.join(', ') }}</h3>
+              <h4 :class="`font-weight-light mb-4 ${slot.color}--text`">{{ slot.teachers.join(', ') }}</h4>
+            </v-card-text>
+          </v-card>
+        </v-timeline-item>
+      </div>
     </v-timeline>
     <!-- Progress spinner -->
     <v-progress-circular
@@ -46,6 +56,7 @@
 
 <script lang="ts">
   import { mapActions, mapGetters } from 'vuex';
+  import { add } from 'date-fns';
 
 export default {
   metaInfo: {
@@ -56,7 +67,7 @@ export default {
     error: null,
   }),
   computed: {
-    ...mapGetters('event', ['getEvents']),
+    ...mapGetters('event', ['getEvents', 'getDayEvents']),
     events: function() {
       return this.getEvents
     }
@@ -66,7 +77,7 @@ export default {
   },
   async beforeCreate() {
     try {
-      await this.$store.dispatch('event/select', new Date('2020-03-25T00:00:00'))
+      await this.$store.dispatch('event/select', {from: new Date(), to: add(new Date(), {weeks: 1})})
     } catch (e) {
       if (e.message) {
         this.error = e.message;
