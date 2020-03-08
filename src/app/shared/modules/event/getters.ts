@@ -1,4 +1,4 @@
-import { IEventState, IEvent, IEventEntry } from './state';
+import { IEventState, IEvent } from './state';
 import { makeISOKeyFromDate } from '@shared/utils/dateutils';
 
 export interface IEventGetters {

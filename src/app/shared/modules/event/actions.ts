@@ -17,9 +17,9 @@ export interface IEventActions {
 }
 
 export const EventActions: IEventActions = {
-  async select({ getters, rootState, commit, dispatch }, date) {
+  async select({ getters, state, commit, dispatch }, date) {
     const cacheKey = makeISOKeyFromDate(date);
-    const match: IEventEntry = rootState.event.events[cacheKey];
+    const match: IEventEntry = state.events[cacheKey];
 
     // Events already cached
     if (match) {
@@ -32,12 +32,27 @@ export const EventActions: IEventActions = {
     }
     commit('SET_SELECTION', date);
   },
-  async loadEventsForDate({ getters, rootState, commit }, date) {
-    const res = await HttpService.post('/schedule', {
+  async loadEventsForDate({ getters, rootState, commit, dispatch }, date) {
+    let res = await HttpService.post('/schedule', {
       date,
       token: rootState.auth.loginCSRFToken,
       cookie: rootState.auth.cookie,
     });
+
+    // Silent login if our session was expired
+    if (res.status !== 200 || res.data.error_code !== 0){
+     await dispatch('auth/silentLogin', {}, {root: true})
+      res = await HttpService.post('/schedule', {
+        date,
+        token: rootState.auth.loginCSRFToken,
+        cookie: rootState.auth.cookie,
+      });
+    }
+
+    // Still got an error
+    if (res.status !== 200 || res.data.error_code !== 0){
+      throw "Unable to connect to ZPA!";
+    }
 
     const mappedEvents: IEvent[] = res.data.slots.map((slot: any) => ({
         changed: {

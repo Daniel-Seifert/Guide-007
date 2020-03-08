@@ -47,17 +47,17 @@ export const createApp = (): IApp => {
   // Register custom filters
   Vue.filter('date', (value: any) => {
     if (value) {
-      return format(value, 'dd.MM.yyyy');
+      return format(new Date(value), 'dd.MM.yyyy');
     }
   });
   Vue.filter('time', (value: any) => {
     if (value) {
-      return format(value, 'HH:mm');
+      return format(new Date(value), 'HH:mm');
     }
   });
   Vue.filter('date-time', (value: any) => {
     if (value) {
-      return format(value, 'dd.MM.yyyy HH:mm');
+      return format(new Date(value), 'dd.MM.yyyy HH:mm');
     }
   });
   return { app, router, store, vuetify, i18n };
