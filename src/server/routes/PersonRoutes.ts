@@ -3,10 +3,11 @@ import { Request, Response } from 'express';
 import { HttpService } from '@/app/shared/services/HttpService/HttpService';
 
 export const PersonRoutes = (app: Express.Application) => {
-  app.get('/persons', async (req: Request, res: Response) => {
+  app.post('/persons', async (req: Request, res: Response) => {
     console.log('GET RECEIVED');
     await HttpService.get('https://www.cs.hm.edu/die_fakultaet/ansprechpartner/professoren/index.de.html')
       .then(response => {
+        const htmlData: string = response.data;
         res.status(200).json({
           webPageData: response.data,
         });

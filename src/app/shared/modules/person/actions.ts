@@ -11,7 +11,7 @@ export interface IPersonActions {
 
 export const PersonActions: IPersonActions = {
   async setPersons(context: ActionContext<IPersonState, IState>) {
-    await HttpService.get('/persons')
+    await HttpService.post('/persons')
       .then(response => console.log('response.data'))
       .catch(err => console.log(err.response.status));
     return {};
