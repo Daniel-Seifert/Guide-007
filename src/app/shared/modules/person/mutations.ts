@@ -1,4 +1,4 @@
-import { IPersonState } from '@shared/modules/Person/state';
+import { IPersonState } from '@shared/modules/person/state';
 
 export interface IPersonMutations {
   SET_PERSONS(state: IPersonState, payload: any): void;

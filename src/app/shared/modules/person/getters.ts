@@ -1,4 +1,4 @@
-import { IPersonEntry, IPersonState } from '@shared/modules/Person/state';
+import { IPersonEntry, IPersonState } from '@shared/modules/person/state';
 
 export interface IPersonGetters {
   getPersons(state: IPersonState): any;

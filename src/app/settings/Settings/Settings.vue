@@ -43,6 +43,9 @@ export default {
   },
   methods: {
     ...mapActions('app', ['setDarkmode']),
+  },
+  beforeCreate(): void {
+    this.$store.dispatch('person/setPersons');
   }
 };
 </script>

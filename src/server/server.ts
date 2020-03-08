@@ -4,6 +4,7 @@ import { StaticRoutes } from './routes/StaticRoutes';
 import { SSRRoutes } from './routes/SSRRoutes';
 import { LoginRoutes } from './routes/LoginRoutes';
 import { ScheduleRoutes } from './routes/ScheduleRoutes';
+import { PersonRoutes } from './routes/PersonRoutes';
 
 export const app: Express.Application = Express();
 
@@ -18,3 +19,4 @@ StaticRoutes(app);
 SSRRoutes(app);
 LoginRoutes(app);
 ScheduleRoutes(app);
+PersonRoutes(app);

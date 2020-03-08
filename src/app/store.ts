@@ -7,6 +7,7 @@ import { PersistCookieStorage } from '@vuesion/addon-vuex-persist/dist/PersistCo
 import { AppModule } from './app/module';
 import { AuthModule } from '@shared/modules/auth/module';
 import { EventModule } from './shared/modules/event/module';
+import { PersonModule } from '@shared/modules/person/module';
 
 Vue.use(Vuex);
 
@@ -60,3 +61,4 @@ export const onStoreLoaded = (store?: Store<IState>, vuetify?: any) => {
 registerModule('app', AppModule);
 registerModule('auth', AuthModule);
 registerModule('event', EventModule);
+registerModule('person', PersonModule);
