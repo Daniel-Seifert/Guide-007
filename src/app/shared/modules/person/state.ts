@@ -1,6 +1,7 @@
 export interface IPersonEntry {
+  avatarSource: string,
   name: string,
-  avatarSrc: string,
+  room: string,
 }
 
 export interface IPersonState {
@@ -9,6 +10,6 @@ export interface IPersonState {
 
 export const PersonDefaultState = (): IPersonState => {
   return {
-    persons: {}
+    persons: {},
   };
 };

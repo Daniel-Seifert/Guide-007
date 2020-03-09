@@ -1,9 +1,9 @@
-import { IPersonState, PersonDefaultState } from '@shared/modules/person/state';
 import { Module } from 'vuex';
 import { IState } from '@/app/state';
-import { PersonGetters } from '@shared/modules/person/getters';
-import { PersonActions } from '@shared/modules/person/actions';
-import { PersonMutations } from '@shared/modules/person/mutations';
+import { IPersonState, PersonDefaultState } from './state';
+import { PersonActions } from './actions';
+import { PersonGetters } from './getters';
+import { PersonMutations } from './mutations';
 
 export const PersonModule: Module<IPersonState, IState> = {
   namespaced: true,

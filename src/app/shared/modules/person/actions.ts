@@ -1,5 +1,5 @@
 import { ActionContext } from 'vuex';
-import { IPersonState } from '@shared/modules/person/state';
+import { IPersonEntry, IPersonState } from '@shared/modules/person/state';
 import { IState } from '@/app/state';
 import { HttpService } from '@shared/services/HttpService/HttpService';
 
@@ -10,9 +10,12 @@ export interface IPersonActions {
 }
 
 export const PersonActions: IPersonActions = {
-  async setPersons(context: ActionContext<IPersonState, IState>) {
+  async setPersons({ getters, rootState, commit, dispatch }) {
     await HttpService.post('/persons')
-      .then(response => console.log('response.data'))
+      .then(response => {
+        const personEntries: IPersonEntry[] = response.data.allPersons;
+        commit('SET_PERSONS', personEntries);
+      })
       .catch(err => console.log(err.response.status));
     return {};
   },
