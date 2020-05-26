@@ -32,7 +32,7 @@ export const createApp = (): IApp => {
 
   const vuetify = new Vuetify({
     icons: {
-      iconfont: 'mdi',
+      iconfont: 'mdiSvg',
     },
   });
 
